@@ -1,7 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+
+const url = "http://52.26.193.201:3000"
 
 function App() {
+
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    setProducts(fetchProducts)
+  }, [])
+
+  useEffect(() => {
+    console.log(products)
+  }, [products])
+
+  async function fetchProducts() {
+    let res = await fetch(`${url}/products/list`)
+    let json = await res.json()
+    return json
+  }
+
   return (
     <div className="App">
       <header className="App-header">
