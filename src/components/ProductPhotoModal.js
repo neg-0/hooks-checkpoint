@@ -1,9 +1,13 @@
+import CloseIcon from '@mui/icons-material/Close';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
+import { alpha } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import { useContext, useEffect } from 'react';
 import { ActionAPIContext } from '../App';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 
 
 const style = {
@@ -14,12 +18,11 @@ const style = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
-    pt: 8
+    p: 0
 };
 
 
-export default function ProductPhotoModal({ open, image }) {
+export default function ProductPhotoModal({ open, image, details }) {
 
     const actionAPI = useContext(ActionAPIContext)
     const handleClose = (e) => { actionAPI.hideModal(e) }
@@ -36,18 +39,27 @@ export default function ProductPhotoModal({ open, image }) {
             >
 
                 <Box sx={style}>
-                    <IconButton
-                        aria-label="close"
-                        onClick={handleClose}
-                        sx={{
-                            position: 'absolute',
-                            right: 8,
-                            top: 8,
-                            color: (theme) => theme.palette.grey[500],
-                        }}
-                    >
-                        <CloseIcon />
-                    </IconButton>
+                    <AppBar position="absolute" sx={{ backgroundColor: alpha("#000", 0.5) }}>
+                        <Toolbar>
+
+                            <IconButton
+                                aria-label="close"
+                                onClick={handleClose}
+                                sx={{
+                                    position: 'absolute',
+                                    right: 8,
+                                    top: 10,
+                                    color: "white"
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 1, textShadow: "0px 0px 8px #000" }}>
+                                {details?.name} - ${details?.default_price}
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+
                     <img src={image} style={{
                         minHeight: window.innerHeight / 4,
                         minWidth: window.innerWidth / 4,

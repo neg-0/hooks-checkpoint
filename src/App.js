@@ -13,6 +13,7 @@ function App() {
   const [products, setProducts] = useState([])
   const [modalImage, setModalPhoto] = useState()
   const [modalOpen, setModalOpen] = useState(false)
+  const [modalProductDetails, setModalProductDetails] = useState()
 
   const FetchAPI = {
     fetchProducts,
@@ -72,6 +73,9 @@ function App() {
       if (!image) {
         return
       }
+
+      fetchProductDetails(productId).then(setModalProductDetails)
+
       setModalPhoto(image)
       setModalOpen(true)
     })
@@ -81,15 +85,13 @@ function App() {
     setModalOpen(false)
   }
 
-  console.log("products:", products)
-
   if (Array.isArray(products) && products.length > 0) {
     return (
       <ActionAPIContext.Provider value={ActionAPI}>
         <FetchAPIContext.Provider value={FetchAPI}>
           <div>
             <ProductList products={products} />
-            <ProductPhotoModal open={modalOpen} image={modalImage} />
+            <ProductPhotoModal open={modalOpen} image={modalImage} details={modalProductDetails} />
           </div>
         </FetchAPIContext.Provider>
       </ActionAPIContext.Provider>
