@@ -5,14 +5,21 @@ import Grid from '@mui/material/Grid';
 
 export default function ProductList({ products }) {
     return (
-        <Box sx={{ flexGrow: 1 }}  >
-            <Grid container
-                spacing={2}
-                direction="row"
-                justifyContent="center"
-                alignItems="top">
-                {products.map(product => <Grid item xs={2} width={"200px"}><ProductCard key={product.id} product={product} /></Grid>)}
-            </Grid>
-        </Box>
+        <div style={{ width: '100%', ali: "center" }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    flexDirection: 'row',
+                    p: 1,
+                    m: 1,
+                    bgcolor: 'background.paper',
+                    maxWidth: "100%",
+                }}
+            >
+                {products.map(product => <Box key={product.id} sx={{ p: 1 }}><ProductCard product={product} /></Box>)}
+
+            </Box>
+        </div>
     )
 }
