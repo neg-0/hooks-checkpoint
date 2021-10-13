@@ -1,6 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
+import ProductList from './components/ProductList';
 
 const url = "http://52.26.193.201:3000"
 
@@ -10,8 +10,7 @@ function App() {
   const [productDetails, setProductDetails] = useState([])
 
   useEffect(() => {
-    setProducts(fetchProducts)
-    setProductDetails(fetchProductDetails(1))
+    fetchProducts()
   }, [])
 
   useEffect(() => {
@@ -25,33 +24,24 @@ function App() {
   async function fetchProducts() {
     let res = await fetch(`${url}/products/list`)
     let json = await res.json()
-    return json
+    setProducts(json)
   }
 
   async function fetchProductDetails(productId) {
     let res = await fetch(`${url}/products/${productId}`)
     let json = await res.json()
-    return json
+    setProductDetails(json)
   }
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  console.log("products:", products)
+
+  if (Array.isArray(products) && products.length > 0) {
+    return (
+      <div>
+        <ProductList products={products} />
+      </div>
+    )
+  } else { return <div>Loading Products</div> }
 }
 
 export default App;
