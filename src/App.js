@@ -1,15 +1,18 @@
 import './App.css';
 import { useEffect, useState, createContext } from 'react';
 import ProductList from './components/ProductList';
+import ProductPhotoModal from './components/ProductPhotoModal';
 
 const url = "http://52.26.193.201:3000"
 
+export const ProductClickContext = createContext()
 export const FetchAPIContext = createContext()
 
 function App() {
 
   const [products, setProducts] = useState([])
-  const [productDetails, setProductDetails] = useState([])
+  const [productPhotoModal, setProductPhotoModal] = useState()
+
   const FetchAPI = {
     fetchProducts,
     fetchProductDetails,
@@ -45,18 +48,25 @@ function App() {
     let json = await res.json()
     return json
   }
-    setProductDetails(json)
+
+  async function onProductClick(productId, event) {
+    let styles = fetchProductStyles()
+    let modal = <ProductPhotoModal styles={styles} />
+    setProductPhotoModal(modal)
   }
 
   console.log("products:", products)
 
   if (Array.isArray(products) && products.length > 0) {
     return (
+      <ProductClickContext.Provider value={onProductClick}>
         <FetchAPIContext.Provider value={FetchAPI}>
           <div>
             <ProductList products={products} />
+            {productPhotoModal}
           </div>
         </FetchAPIContext.Provider>
+      </ProductClickContext.Provider>
     )
   } else { return <div>Loading Products</div> }
 }
