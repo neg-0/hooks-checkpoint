@@ -50,7 +50,7 @@ export default App;
 
 // Make an API call to get a product list (Products data service, subsection "list") - DONE
 // Make an API call to get specific details on a given product when its entry is clicked (Products data service - subsection ":productId") - DONE
-// Display a list of products as cards with text of description
+// Display a list of products as cards with text of description - DONE
 // Make each product clickable so that when clicked, it displays an image from the API for that product (Products data service - subsection "styles")
 // Make it so that only one product's photo is visible at a time, and clicking it again closes the photo (NOTE: If a product does not have a viable photo on the API, allow for this eventuality with good conditional rendering).
 // Advanced Content
