@@ -72,27 +72,32 @@ export default function ProductCard({ product, styles }) {
                     {product.description}
                 </Typography>
             </CardContent>
-            <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
+            <CardActionArea onClick={handleExpandClick}>
+                <CardActions disableSpacing>
+                    {/* <IconButton aria-label="add to favorites">
                     <FavoriteIcon />
                 </IconButton>
                 <IconButton aria-label="share">
                     <ShareIcon />
-                </IconButton>
-                <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </ExpandMore>
-            </CardActions>
+                </IconButton> */}
+                    <Typography variant="h6" component="div" display="inline-flex" marginLeft="auto">
+                        Details
+                    </Typography>
+                    <ExpandMore
+                        expand={expanded}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                        sx={{ marginLeft: 0 }}
+                    >
+                        <ExpandMoreIcon />
+                    </ExpandMore>
+                </CardActions>
+            </CardActionArea>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <ProductCardDetailsList details={details} />
                 </CardContent>
             </Collapse>
-        </Card>
+        </Card >
     );
 }
