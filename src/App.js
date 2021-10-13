@@ -5,18 +5,26 @@ import ProductPhotoModal from './components/ProductPhotoModal';
 
 const url = "http://52.26.193.201:3000"
 
-export const ProductClickContext = createContext()
+export const ActionAPIContext = createContext()
 export const FetchAPIContext = createContext()
 
 function App() {
 
   const [products, setProducts] = useState([])
-  const [productPhotoModal, setProductPhotoModal] = useState()
+  const [modalImage, setModalPhoto] = useState()
+  const [modalOpen, setModalOpen] = useState(false)
 
   const FetchAPI = {
     fetchProducts,
     fetchProductDetails,
-    fetchProductStyles
+    fetchProductStyles,
+    fetchProductThumbnail,
+    fetchProductImage
+  }
+
+  const ActionAPI = {
+    displayModal,
+    hideModal
   }
 
   useEffect(() => {
@@ -31,8 +39,8 @@ function App() {
     console.log(products)
   }, [products])
 
-  async function fetchProducts() {
-    let res = await fetch(`${url}/products/list`)
+  async function fetchProducts(count = 10) {
+    let res = await fetch(`${url}/products/list?count=${count}`)
     let json = await res.json()
     return json
   }
@@ -49,24 +57,39 @@ function App() {
     return json
   }
 
-  async function onProductClick(productId, event) {
-    let styles = fetchProductStyles()
-    let modal = <ProductPhotoModal styles={styles} />
-    setProductPhotoModal(modal)
+  async function fetchProductThumbnail(productId) {
+    let styles = await fetchProductStyles(productId)
+    return styles?.results[0]?.photos[0]?.thumbnail_url
+  }
+
+  async function fetchProductImage(productId) {
+    let styles = await fetchProductStyles(productId)
+    return styles?.results[0]?.photos[0]?.url
+  }
+
+  function displayModal(productId, event) {
+    fetchProductImage(productId).then(image => {
+      setModalPhoto(image)
+      setModalOpen(true)
+    })
+  }
+
+  function hideModal(event) {
+    setModalOpen(false)
   }
 
   console.log("products:", products)
 
   if (Array.isArray(products) && products.length > 0) {
     return (
-      <ProductClickContext.Provider value={onProductClick}>
+      <ActionAPIContext.Provider value={ActionAPI}>
         <FetchAPIContext.Provider value={FetchAPI}>
           <div>
             <ProductList products={products} />
-            {productPhotoModal}
+            <ProductPhotoModal open={modalOpen} image={modalImage} />
           </div>
         </FetchAPIContext.Provider>
-      </ProductClickContext.Provider>
+      </ActionAPIContext.Provider>
     )
   } else { return <div>Loading Products</div> }
 }

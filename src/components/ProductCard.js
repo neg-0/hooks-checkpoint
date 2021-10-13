@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useContext, useEffect, useState } from 'react';
-import { FetchAPIContext, ProductClickContext } from '../App';
+import { FetchAPIContext, ActionAPIContext } from '../App';
 import ProductCardDetailsList from './ProductCardDetailsList';
 import ProductCardImage from './ProductCardImage';
 
@@ -41,7 +41,7 @@ export default function ProductCard({ product, styles }) {
     const [expanded, setExpanded] = useState(false);
     const [image, setImage] = useState()
     const [details, setDetails] = useState()
-    const onProductClick = useContext(ProductClickContext)
+    const actionAPI = useContext(ActionAPIContext)
     const fetchAPI = useContext(FetchAPIContext)
 
     const handleExpandClick = () => {
@@ -50,9 +50,7 @@ export default function ProductCard({ product, styles }) {
 
     useEffect(() => {
         // Fetch the product image
-        fetchAPI.fetchProductStyles(product.id).then(style => {
-            setImage(style?.results[0]?.photos[0]?.thumbnail_url)
-        })
+        fetchAPI.fetchProductThumbnail(product.id).then(setImage)
 
         // Fetch the product details
         fetchAPI.fetchProductDetails(product.id).then(setDetails)
@@ -60,7 +58,7 @@ export default function ProductCard({ product, styles }) {
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea onClick={(e) => { onProductClick(product.id, e) }}>
+            <CardActionArea onClick={(e) => { actionAPI.displayModal(product.id, e) }}>
                 <ProductCardImage name={product.name} image={image} />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
