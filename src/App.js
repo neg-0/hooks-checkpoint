@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      let pro = await fetchProducts()
+      let pro = await fetchProducts(50)
       setProducts(pro)
     }
     fetchData()
