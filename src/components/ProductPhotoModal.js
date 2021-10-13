@@ -27,8 +27,6 @@ export default function ProductPhotoModal({ open, image, details }) {
     const actionAPI = useContext(ActionAPIContext)
     const handleClose = (e) => { actionAPI.hideModal(e) }
 
-    useEffect(() => console.log(image), [image])
-
     return (
         <div>
             <Modal
