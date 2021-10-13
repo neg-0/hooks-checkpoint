@@ -60,18 +60,18 @@ export default function ProductCard({ product, styles }) {
         <Card sx={{ maxWidth: 345 }} id={product.id}>
             <CardActionArea onClick={(e) => { actionAPI.displayModal(product.id, e) }}>
                 <ProductCardImage name={product.name} image={image} />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {product.name}
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div">
-                        ${product.default_price}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {product.description}
-                    </Typography>
-                </CardContent>
             </CardActionArea>
+            <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                    {product.name}
+                </Typography>
+                <Typography gutterBottom variant="h6" component="div">
+                    ${product.default_price}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {product.description}
+                </Typography>
+            </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="add to favorites">
                     <FavoriteIcon />
