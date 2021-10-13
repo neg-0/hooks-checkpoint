@@ -57,7 +57,7 @@ export default function ProductCard({ product, styles }) {
     }, [])
 
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 345 }} id={product.id}>
             <CardActionArea onClick={(e) => { actionAPI.displayModal(product.id, e) }}>
                 <ProductCardImage name={product.name} image={image} />
                 <CardContent>
