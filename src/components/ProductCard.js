@@ -10,10 +10,11 @@ import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useContext, useEffect, useState } from 'react';
-import { FetchAPIContext, ActionAPIContext } from '../App';
+import { ActionAPIContext } from '../App';
 import ProductCardDetailsList from './ProductCardDetailsList';
 import ProductCardImage from './ProductCardImage';
 import ProductCardRating from './ProductCardRating';
+import { fetchProductThumbnail, fetchProductDetails } from "./FetchAPI"
 
 
 // Sample product:
@@ -43,7 +44,6 @@ export default function ProductCard({ product }) {
     const [image, setImage] = useState()
     const [details, setDetails] = useState()
     const actionAPI = useContext(ActionAPIContext)
-    const fetchAPI = useContext(FetchAPIContext)
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -51,10 +51,10 @@ export default function ProductCard({ product }) {
 
     useEffect(() => {
         // Fetch the product image
-        fetchAPI.fetchProductThumbnail(product.id).then(setImage)
+        fetchProductThumbnail(product.id).then(setImage)
 
         // Fetch the product details
-        fetchAPI.fetchProductDetails(product.id).then(setDetails)
+        fetchProductDetails(product.id).then(setDetails)
     }, [])
 
     return (

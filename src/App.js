@@ -2,11 +2,9 @@ import './App.css';
 import { useEffect, useState, createContext } from 'react';
 import ProductList from './components/ProductList';
 import ProductPhotoModal from './components/ProductPhotoModal';
-
-const url = "http://52.26.193.201:3000"
+import { fetchProducts, fetchProductImage, fetchProductDetails } from "./components/FetchAPI"
 
 export const ActionAPIContext = createContext()
-export const FetchAPIContext = createContext()
 
 function App() {
 
@@ -14,15 +12,6 @@ function App() {
   const [modalImage, setModalPhoto] = useState()
   const [modalOpen, setModalOpen] = useState(false)
   const [modalProductDetails, setModalProductDetails] = useState()
-
-  const FetchAPI = {
-    fetchProducts,
-    fetchProductDetails,
-    fetchProductStyles,
-    fetchProductThumbnail,
-    fetchProductImage,
-    fetchProductRating
-  }
 
   const ActionAPI = {
     displayModal,
@@ -36,64 +25,6 @@ function App() {
     }
     fetchData()
   }, [])
-
-  useEffect(() => {
-    console.log(products)
-  }, [products])
-
-  async function fetchProducts(count = 10) {
-    let res = await fetch(`${url}/products/list?count=${count}`)
-    let json = await res.json()
-    return json
-  }
-
-  async function fetchProductDetails(productId) {
-    let res = await fetch(`${url}/products/${productId}`)
-    let json = await res.json()
-    return json
-  }
-
-  async function fetchProductStyles(productId) {
-    let res = await fetch(`${url}/products/${productId}/styles`)
-    let json = await res.json()
-    return json
-  }
-
-  async function fetchProductThumbnail(productId) {
-    let styles = await fetchProductStyles(productId)
-    return styles?.results[0]?.photos[0]?.thumbnail_url
-  }
-
-  async function fetchProductImage(productId) {
-    let styles = await fetchProductStyles(productId)
-    return styles?.results[0]?.photos[0]?.url
-  }
-
-  async function fetchProductRating(productId) {
-    let res = await fetch(`${url}/reviews/${productId}/meta`)
-    let reviews = await res.json()
-
-    console.log("reviews", reviews)
-    let rating = 0
-    let count = 0
-
-    let ratings = reviews.ratings
-
-    if (Object.keys(ratings).length === 0) {
-      return 0
-    }
-
-    for (let i in ratings) {
-      rating += reviews.ratings[i] * i
-      count += reviews.ratings[i]
-    }
-
-    rating /= count
-
-    console.log("rating", rating)
-
-    return rating
-  }
 
   function displayModal(productId, event) {
     fetchProductImage(productId).then(image => {
@@ -115,12 +46,10 @@ function App() {
   if (Array.isArray(products) && products.length > 0) {
     return (
       <ActionAPIContext.Provider value={ActionAPI}>
-        <FetchAPIContext.Provider value={FetchAPI}>
-          <div>
-            <ProductList products={products} />
-            <ProductPhotoModal open={modalOpen} image={modalImage} details={modalProductDetails} />
-          </div>
-        </FetchAPIContext.Provider>
+        <div>
+          <ProductList products={products} />
+          <ProductPhotoModal open={modalOpen} image={modalImage} details={modalProductDetails} />
+        </div>
       </ActionAPIContext.Provider>
     )
   } else { return <div>Loading Products</div> }
