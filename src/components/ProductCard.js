@@ -13,6 +13,7 @@ import { useContext, useEffect, useState } from 'react';
 import { FetchAPIContext, ActionAPIContext } from '../App';
 import ProductCardDetailsList from './ProductCardDetailsList';
 import ProductCardImage from './ProductCardImage';
+import ProductCardRating from './ProductCardRating';
 
 
 // Sample product:
@@ -36,7 +37,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function ProductCard({ product, styles }) {
+export default function ProductCard({ product }) {
 
     const [expanded, setExpanded] = useState(false);
     const [image, setImage] = useState()
@@ -74,12 +75,7 @@ export default function ProductCard({ product, styles }) {
             </CardContent>
             <CardActionArea onClick={handleExpandClick}>
                 <CardActions disableSpacing>
-                    {/* <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton>
-                <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton> */}
+                    <ProductCardRating productId={product.id} />
                     <Typography variant="h6" component="div" display="inline-flex" marginLeft="auto">
                         Details
                     </Typography>

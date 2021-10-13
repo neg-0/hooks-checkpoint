@@ -20,7 +20,8 @@ function App() {
     fetchProductDetails,
     fetchProductStyles,
     fetchProductThumbnail,
-    fetchProductImage
+    fetchProductImage,
+    fetchProductRating
   }
 
   const ActionAPI = {
@@ -68,6 +69,32 @@ function App() {
     return styles?.results[0]?.photos[0]?.url
   }
 
+  async function fetchProductRating(productId) {
+    let res = await fetch(`${url}/reviews/${productId}/meta`)
+    let reviews = await res.json()
+
+    console.log("reviews", reviews)
+    let rating = 0
+    let count = 0
+
+    let ratings = reviews.ratings
+
+    if (Object.keys(ratings).length === 0) {
+      return 0
+    }
+
+    for (let i in ratings) {
+      rating += reviews.ratings[i] * i
+      count += reviews.ratings[i]
+    }
+
+    rating /= count
+
+    console.log("rating", rating)
+
+    return rating
+  }
+
   function displayModal(productId, event) {
     fetchProductImage(productId).then(image => {
       if (!image) {
@@ -111,7 +138,7 @@ export default App;
 
 // Advanced Content
 
-// Add a nav bar and button that will also close the photo and/or display the product list again.
+// Add a nav bar and button that will also close the photo and/or display the product list again. - DONE
 // Add miniature thumbnail photo to each product card - DONE
 // Add Review score to each product card (Reviews data service)
 // Add a display for Question/Answers to each product that is visible only when the photo is enlarged (Questions data service)
