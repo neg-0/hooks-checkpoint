@@ -1,35 +1,50 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext } from 'react';
 import ProductList from './components/ProductList';
 
 const url = "http://52.26.193.201:3000"
+
+export const FetchAPIContext = createContext()
 
 function App() {
 
   const [products, setProducts] = useState([])
   const [productDetails, setProductDetails] = useState([])
+  const FetchAPI = {
+    fetchProducts,
+    fetchProductDetails,
+    fetchProductStyles
+  }
 
   useEffect(() => {
-    fetchProducts()
+    async function fetchData() {
+      let pro = await fetchProducts()
+      setProducts(pro)
+    }
+    fetchData()
   }, [])
 
   useEffect(() => {
     console.log(products)
   }, [products])
 
-  useEffect(() => {
-    console.log(productDetails)
-  }, [productDetails])
-
   async function fetchProducts() {
     let res = await fetch(`${url}/products/list`)
     let json = await res.json()
-    setProducts(json)
+    return json
   }
 
   async function fetchProductDetails(productId) {
     let res = await fetch(`${url}/products/${productId}`)
     let json = await res.json()
+    return json
+  }
+
+  async function fetchProductStyles(productId) {
+    let res = await fetch(`${url}/products/${productId}/styles`)
+    let json = await res.json()
+    return json
+  }
     setProductDetails(json)
   }
 
@@ -37,9 +52,11 @@ function App() {
 
   if (Array.isArray(products) && products.length > 0) {
     return (
-      <div>
-        <ProductList products={products} />
-      </div>
+        <FetchAPIContext.Provider value={FetchAPI}>
+          <div>
+            <ProductList products={products} />
+          </div>
+        </FetchAPIContext.Provider>
     )
   } else { return <div>Loading Products</div> }
 }
