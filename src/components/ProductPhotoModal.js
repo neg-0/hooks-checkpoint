@@ -2,6 +2,9 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { useContext, useEffect } from 'react';
 import { ActionAPIContext } from '../App';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const style = {
     position: 'absolute',
@@ -11,7 +14,8 @@ const style = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4
+    p: 4,
+    pt: 8
 };
 
 
@@ -30,7 +34,20 @@ export default function ProductPhotoModal({ open, image }) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
+
                 <Box sx={style}>
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleClose}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                            color: (theme) => theme.palette.grey[500],
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
                     <img src={image} style={{
                         minHeight: window.innerHeight / 4,
                         minWidth: window.innerWidth / 4,
