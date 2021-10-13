@@ -73,22 +73,23 @@ export default function ProductCard({ product }) {
                     {product.description}
                 </Typography>
             </CardContent>
-            <CardActionArea onClick={handleExpandClick}>
-                <CardActions disableSpacing>
-                    <ProductCardRating productId={product.id} />
-                    <Typography variant="h6" component="div" display="inline-flex" marginLeft="auto">
-                        Details
-                    </Typography>
-                    <ExpandMore
-                        expand={expanded}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                        sx={{ marginLeft: 0 }}
-                    >
-                        <ExpandMoreIcon />
-                    </ExpandMore>
-                </CardActions>
-            </CardActionArea>
+            {/* <CardActionArea onClick={handleExpandClick}> */}
+            <CardActions disableSpacing >
+                <ProductCardRating productId={product.id} />
+                <Typography variant="h6" component="div" display="inline-flex" marginLeft="auto" onClick={handleExpandClick}>
+                    Details
+                </Typography>
+                <ExpandMore
+                    onClick={handleExpandClick}
+                    expand={expanded}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                    sx={{ marginLeft: 0 }}
+                >
+                    <ExpandMoreIcon />
+                </ExpandMore>
+            </CardActions>
+            {/* </CardActionArea> */}
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <ProductCardDetailsList details={details} />
