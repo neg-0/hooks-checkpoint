@@ -1,21 +1,20 @@
 const url = "http://52.26.193.201:3000"
 
+async function fetchJson(url) {
+    let res = await fetch(url)
+    return await res.json()
+}
+
 export async function fetchProducts(count = 10) {
-    let res = await fetch(`${url}/products/list?count=${count}`)
-    let json = await res.json()
-    return json
+    return await fetchJson(`${url}/products/list?count=${count}`)
 }
 
 export async function fetchProductDetails(productId) {
-    let res = await fetch(`${url}/products/${productId}`)
-    let json = await res.json()
-    return json
+    return await fetchJson(`${url}/products/${productId}`)
 }
 
 export async function fetchProductStyles(productId) {
-    let res = await fetch(`${url}/products/${productId}/styles`)
-    let json = await res.json()
-    return json
+    return await fetchJson(`${url}/products/${productId}/styles`)
 }
 
 export async function fetchProductThumbnail(productId) {
