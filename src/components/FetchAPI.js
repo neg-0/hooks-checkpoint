@@ -27,24 +27,32 @@ export async function fetchProductImage(productId) {
     return styles?.results[0]?.photos[0]?.url
 }
 
-export async function fetchProductRating(productId) {
-    let res = await fetch(`${url}/reviews/${productId}/meta`)
-    let reviews = await res.json()
-    let rating = 0
+export async function fetchProductRatings(productId) {
+    let json = await fetchJson(`${url}/reviews/${productId}/meta`)
+
+    let reviews = {}
+
+    let avgRating = 0
     let count = 0
 
-    let ratings = reviews.ratings
+    let ratings = json.ratings
 
     if (Object.keys(ratings).length === 0) {
-        return 0
+        avgRating = 0
+    } else {
+
+        for (let i in ratings) {
+            avgRating += json.ratings[i] * i
+            count += json.ratings[i]
+        }
+
+        avgRating /= count
     }
 
-    for (let i in ratings) {
-        rating += reviews.ratings[i] * i
-        count += reviews.ratings[i]
-    }
+    reviews.rating = avgRating
+    reviews.count = count
+    reviews.recommended = json.recommended
+    reviews.characteristics = json.characteristics
 
-    rating /= count
-
-    return rating
+    return reviews
 }
